@@ -27,9 +27,17 @@ def test_embedding_generation():
     assert all(isinstance(x, float) for x in vec)
 
 def test_ingestion_and_vector_count(setup_vector_store):
-    """Verify that all 35 movies were ingested into ChromaDB."""
+    """Verify that all movies in the dataset were ingested into ChromaDB."""
     store = setup_vector_store
-    assert store.count() >= 35
+
+    dataset_path = Path(__file__).resolve().parent.parent / "data" / "movies.json"
+
+    import json
+
+    with open(dataset_path, "r", encoding="utf-8") as file:
+        movies = json.load(file)
+
+    assert store.count() == len(movies)
 
 def test_space_semantic_search(setup_vector_store):
     """Verify space query ranks relevant space movies at top."""
