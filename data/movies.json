@@ -1,0 +1,317 @@
+[
+  {
+    "id": "movie_001",
+    "title": "Interstellar",
+    "description": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival as Earth faces famine and environmental collapse.",
+    "genre": ["Science Fiction", "Adventure", "Drama"],
+    "year": 2014,
+    "rating": 8.7,
+    "director": "Christopher Nolan"
+  },
+  {
+    "id": "movie_002",
+    "title": "The Martian",
+    "description": "An astronaut becomes stranded on Mars after his crew assumes him dead. He must rely on his ingenuity, science, and spirit to signal to Earth that he is alive.",
+    "genre": ["Science Fiction", "Adventure", "Drama"],
+    "year": 2015,
+    "rating": 8.0,
+    "director": "Ridley Scott"
+  },
+  {
+    "id": "movie_003",
+    "title": "Gravity",
+    "description": "Two astronauts work together to survive after an accident leaves them stranded in deep space with limited oxygen and tethered to nothing.",
+    "genre": ["Science Fiction", "Thriller", "Drama"],
+    "year": 2013,
+    "rating": 7.7,
+    "director": "Alfonso Cuarón"
+  },
+  {
+    "id": "movie_004",
+    "title": "Ex Machina",
+    "description": "A young programmer is selected to participate in a ground-breaking experiment in synthetic intelligence by evaluating the human qualities of a highly advanced humanoid AI.",
+    "genre": ["Science Fiction", "Thriller", "Drama"],
+    "year": 2014,
+    "rating": 7.7,
+    "director": "Alex Garland"
+  },
+  {
+    "id": "movie_005",
+    "title": "Her",
+    "description": "In a near future, a lonely writer develops an unlikely and deep romantic relationship with an operating system designed to meet his every need.",
+    "genre": ["Science Fiction", "Romance", "Drama"],
+    "year": 2013,
+    "rating": 8.0,
+    "director": "Spike Jonze"
+  },
+  {
+    "id": "movie_006",
+    "title": "The Matrix",
+    "description": "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
+    "genre": ["Science Fiction", "Action"],
+    "year": 1999,
+    "rating": 8.7,
+    "director": "Lana Wachowski, Lilly Wachowski"
+  },
+  {
+    "id": "movie_007",
+    "title": "Blade Runner 2049",
+    "description": "Young Blade Runner K's discovery of a long-buried secret leads him to track down former Blade Runner Rick Deckard, who's been missing for thirty years.",
+    "genre": ["Science Fiction", "Mystery", "Drama"],
+    "year": 2017,
+    "rating": 8.0,
+    "director": "Denis Villeneuve"
+  },
+  {
+    "id": "movie_008",
+    "title": "Cast Away",
+    "description": "A FedEx executive undergoes a physical and emotional transformation after a crash landing leaves him stranded on a deserted tropical island completely alone.",
+    "genre": ["Adventure", "Drama"],
+    "year": 2000,
+    "rating": 7.8,
+    "director": "Robert Zemeckis"
+  },
+  {
+    "id": "movie_009",
+    "title": "Apollo 13",
+    "description": "NASA must devise a strategy to return Apollo 13 safely to Earth after an on-board explosion damages the spacecraft and threatens the lives of three astronauts.",
+    "genre": ["Adventure", "Drama", "History"],
+    "year": 1995,
+    "rating": 7.7,
+    "director": "Ron Howard"
+  },
+  {
+    "id": "movie_010",
+    "title": "Arrival",
+    "description": "A linguist works with the military to communicate with alien lifeforms after mysterious spacecraft land around the world, trying to decipher their complex language.",
+    "genre": ["Science Fiction", "Drama", "Mystery"],
+    "year": 2016,
+    "rating": 7.9,
+    "director": "Denis Villeneuve"
+  },
+  {
+    "id": "movie_011",
+    "title": "Superbad",
+    "description": "Two co-dependent high school seniors are forced to deal with separation anxiety after their plan to host a alcohol-fueled party goes wildly out of control.",
+    "genre": ["Comedy"],
+    "year": 2007,
+    "rating": 7.6,
+    "director": "Greg Mottola"
+  },
+  {
+    "id": "movie_012",
+    "title": "The Hangover",
+    "description": "Three buddies wake up from a bachelor party in Las Vegas with no memory of the previous night and the groom missing, retracing their steps to find him.",
+    "genre": ["Comedy"],
+    "year": 2009,
+    "rating": 7.7,
+    "director": "Todd Phillips"
+  },
+  {
+    "id": "movie_013",
+    "title": "Inception",
+    "description": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
+    "genre": ["Science Fiction", "Action", "Adventure"],
+    "year": 2010,
+    "rating": 8.8,
+    "director": "Christopher Nolan"
+  },
+  {
+    "id": "movie_014",
+    "title": "The Dark Knight",
+    "description": "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
+    "genre": ["Action", "Crime", "Drama"],
+    "year": 2008,
+    "rating": 9.0,
+    "director": "Christopher Nolan"
+  },
+  {
+    "id": "movie_015",
+    "title": "The Shawshank Redemption",
+    "description": "Over the course of several years, two convicts form a friendship, seeking solace and eventual redemption through basic compassion inside a brutal prison.",
+    "genre": ["Drama"],
+    "year": 1994,
+    "rating": 9.3,
+    "director": "Frank Darabont"
+  },
+  {
+    "id": "movie_016",
+    "title": "Pulp Fiction",
+    "description": "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertw in four tales of violence and redemption.",
+    "genre": ["Crime", "Drama"],
+    "year": 1994,
+    "rating": 8.9,
+    "director": "Quentin Tarantino"
+  },
+  {
+    "id": "movie_017",
+    "title": "Parasite",
+    "description": "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.",
+    "genre": ["Drama", "Thriller", "Comedy"],
+    "year": 2019,
+    "rating": 8.5,
+    "director": "Bong Joon Ho"
+  },
+  {
+    "id": "movie_018",
+    "title": "Spirited Away",
+    "description": "During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, where humans are changed into beasts.",
+    "genre": ["Animation", "Adventure", "Fantasy"],
+    "year": 2001,
+    "rating": 8.6,
+    "director": "Hayao Miyazaki"
+  },
+  {
+    "id": "movie_019",
+    "title": "WALL-E",
+    "description": "In a distant, desolate future, a small waste-collecting robot inadvertently embarks on a space journey that will ultimately decide the fate of mankind.",
+    "genre": ["Animation", "Adventure", "Science Fiction"],
+    "year": 2008,
+    "rating": 8.4,
+    "director": "Andrew Stanton"
+  },
+  {
+    "id": "movie_020",
+    "title": "Coco",
+    "description": "Aspiring musician Miguel, confronted with his family's ancestral ban on music, enters the Land of the Dead to find his great-great-grandfather, a legendary singer.",
+    "genre": ["Animation", "Adventure", "Fantasy"],
+    "year": 2017,
+    "rating": 8.4,
+    "director": "Lee Unkrich, Adrian Molina"
+  },
+  {
+    "id": "movie_021",
+    "title": "The Shining",
+    "description": "A family heads to an isolated hotel for the winter where a sinister presence influences the father into violence, while his psychic son sees horrific forebodings from both past and future.",
+    "genre": ["Horror", "Drama"],
+    "year": 1980,
+    "rating": 8.4,
+    "director": "Stanley Kubrick"
+  },
+  {
+    "id": "movie_022",
+    "title": "Get Out",
+    "description": "A young African-American visits his white girlfriend's parents for the weekend, where his simmering uneasiness about their reception eventually reaches a boiling point.",
+    "genre": ["Horror", "Mystery", "Thriller"],
+    "year": 2017,
+    "rating": 7.7,
+    "director": "Jordan Peele"
+  },
+  {
+    "id": "movie_023",
+    "title": "A Quiet Place",
+    "description": "In a post-apocalyptic world, a family is forced to live in silence while hiding from monsters with ultra-sensitive hearing.",
+    "genre": ["Horror", "Drama", "Science Fiction"],
+    "year": 2018,
+    "rating": 7.5,
+    "director": "John Krasinski"
+  },
+  {
+    "id": "movie_024",
+    "title": "La La Land",
+    "description": "While navigating their careers in Los Angeles, a pianist and an actress fall in love while attempting to reconcile their aspirations for the future.",
+    "genre": ["Comedy", "Drama", "Romance"],
+    "year": 2016,
+    "rating": 8.0,
+    "director": "Damien Chazelle"
+  },
+  {
+    "id": "movie_025",
+    "title": "Eternal Sunshine of the Spotless Mind",
+    "description": "When their relationship turns sour, a couple undergoes a medical procedure to have each other erased from their memories.",
+    "genre": ["Drama", "Romance", "Science Fiction"],
+    "year": 2004,
+    "rating": 8.3,
+    "director": "Michel Gondry"
+  },
+  {
+    "id": "movie_026",
+    "title": "Dune: Part Two",
+    "description": "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family, facing a choice between love and the fate of the universe.",
+    "genre": ["Science Fiction", "Action", "Adventure"],
+    "year": 2024,
+    "rating": 8.6,
+    "director": "Denis Villeneuve"
+  },
+  {
+    "id": "movie_027",
+    "title": "Oppenheimer",
+    "description": "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb during World War II.",
+    "genre": ["Biography", "Drama", "History"],
+    "year": 2023,
+    "rating": 8.9,
+    "director": "Christopher Nolan"
+  },
+  {
+    "id": "movie_028",
+    "title": "Everything Everywhere All at Once",
+    "description": "A middle-aged Chinese immigrant is swept up into an insane adventure in which she alone can save existence by exploring other universes and connecting with the lives she could have led.",
+    "genre": ["Action", "Adventure", "Comedy"],
+    "year": 2022,
+    "rating": 7.8,
+    "director": "Daniel Kwan, Daniel Scheinert"
+  },
+  {
+    "id": "movie_029",
+    "title": "Spider-Man: Into the Spider-Verse",
+    "description": "Teen Miles Morales becomes the Spider-Man of his universe, and must join with five spider-powered individuals from other dimensions to stop a threat for all realities.",
+    "genre": ["Animation", "Action", "Adventure"],
+    "year": 2018,
+    "rating": 8.4,
+    "director": "Bob Persichetti, Peter Ramsey, Rodney Rothman"
+  },
+  {
+    "id": "movie_030",
+    "title": "Gladiator",
+    "description": "A former Roman General sets out to exact vengeance against the corrupt emperor who murdered his family and sent him into slavery.",
+    "genre": ["Action", "Adventure", "Drama"],
+    "year": 2000,
+    "rating": 8.5,
+    "director": "Ridley Scott"
+  },
+  {
+    "id": "movie_031",
+    "title": "Whiplash",
+    "description": "A promising young drummer enlists at a cut-throat music conservatory where his dreams of greatness are mentored by an instructor who will stop at nothing to realize a student's potential.",
+    "genre": ["Drama", "Music"],
+    "year": 2014,
+    "rating": 8.5,
+    "director": "Damien Chazelle"
+  },
+  {
+    "id": "movie_032",
+    "title": "Alien",
+    "description": "The crew of a commercial spacecraft encounter a deadly lifeform after investigating an unknown transmission on a desolate planet.",
+    "genre": ["Horror", "Science Fiction"],
+    "year": 1979,
+    "rating": 8.5,
+    "director": "Ridley Scott"
+  },
+  {
+    "id": "movie_033",
+    "title": "Knives Out",
+    "description": "A detective investigates the death of a patriarch of an eccentric, combative family after his 85th birthday celebration.",
+    "genre": ["Comedy", "Crime", "Drama"],
+    "year": 2019,
+    "rating": 7.9,
+    "director": "Rian Johnson"
+  },
+  {
+    "id": "movie_034",
+    "title": "Se7en",
+    "description": "Two detectives, a rookie and a veteran, hunt a serial killer who uses the seven deadly sins as his motives in a dark and rainy city.",
+    "genre": ["Crime", "Drama", "Mystery"],
+    "year": 1995,
+    "rating": 8.6,
+    "director": "David Fincher"
+  },
+  {
+    "id": "movie_035",
+    "title": "The Truman Show",
+    "description": "An insurance salesman discovers his entire life is actually a reality television show broadcast around the clock to millions of viewers.",
+    "genre": ["Comedy", "Drama", "Science Fiction"],
+    "year": 1998,
+    "rating": 8.2,
+    "director": "Peter Weir"
+  }
+]

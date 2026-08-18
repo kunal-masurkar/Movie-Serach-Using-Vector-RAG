@@ -1,0 +1,26 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Vector Database persistence
+chroma_db/
+*.chroma
+
+# Environments & IDEs
+.venv/
+venv/
+ENV/
+env/
+.vscode/
+.idea/
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs & OS metadata
+*.log
+.DS_Store
+Thumbs.db

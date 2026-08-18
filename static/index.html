@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineVector — Semantic Movie Search & Vector DB Engine</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="glow-bg"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="brand">
+                <div class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                </div>
+                <div>
+                    <h1>CineVector <span class="badge-tag">Vector DB</span></h1>
+                    <p class="subtitle">Semantic Movie Intelligence Engine powered by ChromaDB & 384D Embeddings</p>
+                </div>
+            </div>
+            
+            <div class="system-status-card" id="status-card">
+                <div class="status-indicator active"></div>
+                <div class="status-info">
+                    <span class="status-label">Database Engine</span>
+                    <span class="status-value" id="vector-count-badge">Loading ChromaDB...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="semantic-search">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                Semantic Search
+            </button>
+            <button class="tab-btn" data-tab="compare-mode">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                Vector vs Keyword Comparison
+            </button>
+            <button class="tab-btn" data-tab="catalog">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                Movie Catalog & Stats
+            </button>
+        </nav>
+
+        <!-- Tab 1: Semantic Search -->
+        <main class="tab-content active" id="semantic-search">
+            <!-- Search Box & Presets -->
+            <section class="search-panel">
+                <div class="search-input-group">
+                    <svg class="search-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="search-input" placeholder="Describe a movie idea (e.g., 'astronauts stranded exploring deep space')..." autocomplete="off">
+                    <button id="search-btn" class="primary-btn">
+                        <span>Search Vector DB</span>
+                    </button>
+                </div>
+
+                <!-- Sample Presets -->
+                <div class="preset-chips">
+                    <span class="preset-title">Try natural prompts:</span>
+                    <button class="chip" data-query="astronauts exploring deep space searching for a home">🚀 Space Exploration</button>
+                    <button class="chip" data-query="artificial intelligence questioning its humanity and reality">🤖 AI & Reality</button>
+                    <button class="chip" data-query="a person stuck alone on a deserted island trying to stay alive">🏝️ Island Survival</button>
+                    <button class="chip" data-query="serial killer leaves clues using seven deadly sins in rainy city">🕵️ Crime Mystery</button>
+                    <button class="chip" data-query="funny high school friends dealing with alcohol party chaos">🎭 High School Comedy</button>
+                </div>
+
+                <!-- Filter Controls -->
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label for="genre-filter">Genre</label>
+                        <select id="genre-filter">
+                            <option value="All">All Genres</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="rating-filter">Minimum Rating: <span id="rating-val">0.0</span>★</label>
+                        <input type="range" id="rating-filter" min="0" max="9.5" step="0.5" value="0">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="year-filter">Minimum Year</label>
+                        <input type="number" id="year-filter" placeholder="e.g. 2000" min="1970" max="2026">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="topk-filter">Top Results (K)</label>
+                        <select id="topk-filter">
+                            <option value="5" selected>Top 5</option>
+                            <option value="10">Top 10</option>
+                            <option value="15">Top 15</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section">
+                <div class="results-header">
+                    <h2>Similarity Search Results</h2>
+                    <span id="results-count-badge" class="count-badge">0 matches</span>
+                </div>
+
+                <div id="results-loader" class="loader-container hidden">
+                    <div class="spinner"></div>
+                    <p>Encoding query into 384D vector & calculating cosine similarity...</p>
+                </div>
+
+                <div id="movies-grid" class="movies-grid">
+                    <!-- Dynamic Cards -->
+                    <div class="empty-state">
+                        <div class="empty-icon">💡</div>
+                        <h3>Perform a Semantic Search</h3>
+                        <p>Type a natural language description above or click one of the quick prompt chips to explore ChromaDB vector embeddings in real-time.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Tab 2: Vector vs Keyword Comparison -->
+        <section class="tab-content" id="compare-mode">
+            <div class="compare-intro">
+                <h2>Vector DB vs Keyword Search Comparison</h2>
+                <p>See why vector database embeddings outperform literal keyword search when users search by meaning rather than exact words.</p>
+            </div>
+
+            <div class="search-input-group">
+                <input type="text" id="compare-input" value="A person stuck on another planet trying to stay alive" placeholder="Enter a conceptual search query...">
+                <button id="compare-btn" class="primary-btn">
+                    <span>Compare Approaches</span>
+                </button>
+            </div>
+
+            <div id="compare-loader" class="loader-container hidden">
+                <div class="spinner"></div>
+                <p>Running parallel Vector Embedding and Keyword Index evaluations...</p>
+            </div>
+
+            <div id="compare-grid" class="compare-columns">
+                <div class="compare-col vector-col">
+                    <div class="col-header">
+                        <div class="col-icon">🧠</div>
+                        <div>
+                            <h3>Vector Semantic Search (ChromaDB)</h3>
+                            <p class="col-sub">Understands meaning & context via 384D embeddings</p>
+                        </div>
+                    </div>
+                    <div id="vector-results-list" class="compare-cards-list">
+                        <!-- Vector Cards -->
+                    </div>
+                </div>
+
+                <div class="compare-col keyword-col">
+                    <div class="col-header">
+                        <div class="col-icon">🔤</div>
+                        <div>
+                            <h3>Traditional Keyword Search</h3>
+                            <p class="col-sub">Requires literal exact word matches</p>
+                        </div>
+                    </div>
+                    <div id="keyword-results-list" class="compare-cards-list">
+                        <!-- Keyword Cards -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 3: Catalog & Stats -->
+        <section class="tab-content" id="catalog">
+            <div class="stats-overview">
+                <div class="stat-card">
+                    <div class="stat-num" id="stat-total-movies">35</div>
+                    <div class="stat-label">Total Movies Ingested</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num" id="stat-embedding-model">all-MiniLM-L6-v2</div>
+                    <div class="stat-label">Embedding Model</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num" id="stat-vector-dim">384</div>
+                    <div class="stat-label">Vector Dimensions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num" id="stat-similarity-metric">Cosine Space</div>
+                    <div class="stat-label">Distance Metric</div>
+                </div>
+            </div>
+
+            <div class="catalog-section">
+                <h2>All Ingested Movies Dataset</h2>
+                <div id="catalog-grid" class="movies-grid"></div>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
