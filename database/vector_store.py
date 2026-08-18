@@ -138,6 +138,10 @@ class VectorStoreManager:
         return formatted_results
 
     def reset(self):
-        """Clears the collection."""
-        self.client.delete_collection(self.collection_name)
+        """Clears the collection safely."""
+        try:
+            self.client.delete_collection(self.collection_name)
+        except Exception:
+            pass
         self._collection = None
+
