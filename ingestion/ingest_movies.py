@@ -6,7 +6,7 @@ from pathlib import Path
 # Add project root to sys.path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
-from config.settings import MOVIES_DATA_PATH
+from config.settings import EMBEDDING_MODEL_NAME, MOVIES_DATA_PATH
 from embedding.embedder import MovieEmbedder
 from database.vector_store import VectorStoreManager
 
@@ -52,7 +52,7 @@ def ingest_movies_dataset(json_path: str = MOVIES_DATA_PATH, force_reset: bool =
             "director": movie.get("director", "")
         })
 
-    print(f"[Ingestion] Generating embeddings for {len(searchable_texts)} movies using all-MiniLM-L6-v2...")
+    print(f"[Ingestion] Generating embeddings for {len(searchable_texts)} movies using {EMBEDDING_MODEL_NAME}...")
     embeddings = embedder.generate_embeddings_batch(searchable_texts)
 
     print("[Ingestion] Upserting records into ChromaDB vector database...")

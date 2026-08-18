@@ -10,7 +10,7 @@ COLLECTION_NAME = "movies_semantic_search"
 
 # Embedding Model Configuration
 # all-MiniLM-L6-v2 produces 384-dimensional dense vectors
-EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2"
+EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 EMBEDDING_DIMENSION = 384
 
 # Default Search Parameters
