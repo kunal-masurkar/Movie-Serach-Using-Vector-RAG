@@ -1,186 +1,1360 @@
-# 🎬 Movie Semantic Search using Vector Database (ChromaDB)
+# 🎬 CineVector — Semantic Movie Search Using Vector Database
 
-A **semantic movie search engine** built with Python, **ChromaDB**, **Sentence Transformers (`all-MiniLM-L6-v2`)**, **FastAPI**, and a modern dark-mode Web UI.
+CineVector is a semantic movie search engine built with **Python, ChromaDB, Sentence Transformers, FastAPI, and JavaScript**.
 
-Instead of searching strictly by exact keyword matches, this system converts movie descriptions into **384-dimensional dense vector embeddings** and stores them in a vector database. Users can search using natural language (e.g., *"movies about astronauts exploring space"* or *"AI questioning reality"*) to find movies with similar **meanings**, even if the exact search words never appear in the movie description.
-
----
-
-## 💡 How It Works
-
-```
- ┌─────────────────┐
- │   Movie Data    │  (50 movies in JSON format)
- └────────┬────────┘
-          │
-          ▼
- ┌─────────────────┐
- │ Searchable Text │  "Title: Interstellar. Overview: A team of explorers... Genres: Sci-Fi..."
- └────────┬────────┘
-          │
-          ▼
- ┌─────────────────┐
- │ Embedding Model │  all-MiniLM-L6-v2 (SentenceTransformer)
- └────────┬────────┘
-          │
-          ▼
- ┌─────────────────┐
- │ 384D Vector     │  [0.12, -0.43, 0.71, ..., 0.08]
- └────────┬────────┘
-          │
-          ▼
- ┌─────────────────┐
- │ Vector DB Store │  ChromaDB (Cosine distance space + Metadata indexing)
- └────────┬────────┘
-          │
-          ├───────────────────────────────┐
-          │                               │
-          ▼                               ▼
- ┌─────────────────┐             ┌──────────────────┐
- │ Natural Query   │             │ Metadata Filters │  (Genre, Min Rating, Min Year)
- └────────┬────────┘             └────────┬─────────┘
-          │                               │
-          ▼                               │
- ┌─────────────────┐                      │
- │ Query Embedding │                      │
- └────────┬────────┘                      │
-          │                               │
-          └───────────────┬───────────────┘
-                          │
-                          ▼
-                 ┌─────────────────┐
-                 │ Similarity      │  Cosine Similarity = 1 - Cosine Distance
-                 │ Search (Top-K)  │
-                 └────────┬────────┘
-                          │
-                          ▼
-                 ┌─────────────────┐
-                 │ Relevant Movies │  Ranked with Match % Badges & Metadata
-                 └─────────────────┘
-```
-
-### 1. What is an Embedding?
-An embedding is a numerical vector representation of text that captures its underlying **semantic meaning**. 
-- Using `all-MiniLM-L6-v2`, any sentence is transformed into a dense array of **384 numbers**.
-- Texts with similar meanings produce vectors that are mathematically close to each other in 384-dimensional space.
-
-### 2. Searchable Text Construction
-For each movie in `data/movies.json`, an informative text representation is generated:
-```text
-Title: Interstellar. Description: A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival. Genres: Science Fiction, Adventure, Drama. Director: Christopher Nolan.
-```
-
-### 3. Vector Storage in ChromaDB
-The vectors, raw documents, and metadata (`title`, `genre`, `year`, `rating`, `director`) are indexed in a local **ChromaDB** vector database collection configured with Cosine distance metric.
-
-### 4. Cosine Similarity & Match Scoring
-When a user searches (e.g. *"person stranded on Mars trying to survive"*):
-1. The search query is vectorized into a 384D vector.
-2. ChromaDB finds the nearest vectors using Cosine distance ($d$).
-3. Similarity Score is computed as:
-   $$\text{Similarity Score} = 1.0 - d$$
-4. Normalized Match Percentage is displayed (e.g. `86.5% Match`).
-
-### 5. Vector Search vs Keyword Search
-| Metric / Feature | Traditional Keyword Search | Vector Semantic Search (ChromaDB) |
-| :--- | :--- | :--- |
-| **Matching Logic** | Exact literal string matching | Semantic meaning & intent matching |
-| **"Astronaut stranded on planet"** | ❌ Fails if words "astronaut" or "planet" missing | ✅ Finds *The Martian* & *Cast Away* |
-| **Synonyms & Context** | Requires explicit dictionary mapping | Understood automatically via 384D vector space |
-| **Filtering** | Basic SQL `WHERE` | Hybrid Vector Similarity + Metadata Filters |
-
----
-
-## 📁 Project Structure
+Instead of relying only on exact keyword matching, CineVector converts movie information and user search queries into **384-dimensional dense vector embeddings** using:
 
 ```text
-Movie-Search-Using-Vector/
-│
-├── config/
-│   └── settings.py          # Vector DB paths, embedding model & default settings
-│
-├── data/
-│   └── movies.json          # Curated dataset of 50 movies with detailed metadata
-│
-├── database/
-│   └── vector_store.py      # ChromaDB manager (collection creation, metadata filtering)
-│
-├── embedding/
-│   └── embedder.py          # SentenceTransformers (all-MiniLM-L6-v2) wrapper
-│
-├── ingestion/
-│   └── ingest_movies.py     # Batch ingestion pipeline script
-│
-├── search/
-│   └── search_movies.py     # Search engine & vector vs keyword comparison
-│
-├── api/
-│   └── main.py              # FastAPI REST server & endpoint handlers
-│
-├── static/
-│   ├── index.html           # Dark glassmorphic Web UI HTML
-│   ├── style.css            # Custom CSS design system
-│   └── app.js               # Frontend interactive logic
-│
-├── tests/
-│   └── test_vector_search.py # Pytest test suite for vector operations
-│
-├── main.py                  # CLI entry point (search, ingest, serve)
-├── requirements.txt         # Project dependencies
-└── README.md                # Documentation
+sentence-transformers/all-MiniLM-L6-v2
+```
+
+The generated vectors are stored in a local **ChromaDB** vector database.
+
+This allows users to search for movies using natural language and retrieve movies based on their **semantic meaning**, even when the exact words from the search query do not appear in the movie description.
+
+---
+
+## 📌 Example
+
+Traditional keyword search:
+
+```text
+Search:
+"astronaut exploring another planet"
+
+May look for exact words such as:
+astronaut
+exploring
+planet
+```
+
+CineVector:
+
+```text
+Search query
+     ↓
+all-MiniLM-L6-v2
+     ↓
+384-dimensional query vector
+     ↓
+ChromaDB similarity search
+     ↓
+Semantically similar movies
+```
+
+A query such as:
+
+```text
+"A person stranded on another planet trying to survive"
+```
+
+can retrieve movies such as:
+
+```text
+The Martian
+```
+
+even when the query does not exactly match the movie description.
+
+---
+
+# 🧠 How CineVector Works
+
+The complete pipeline is:
+
+```text
+                    Movie Dataset
+                         │
+                         ▼
+                  data/movies.json
+                         │
+                         ▼
+                Searchable Movie Text
+                         │
+                         ▼
+              all-MiniLM-L6-v2 Model
+                         │
+                         ▼
+                384D Dense Vector
+                         │
+                         ▼
+                    ChromaDB
+                         │
+                         │
+             ┌───────────┴───────────┐
+             │                       │
+             ▼                       ▼
+       User Search Query       Metadata Filters
+             │                  Rating / Year
+             ▼                  / Genre
+       Query Embedding
+             │
+             └───────────┬───────────┘
+                         ▼
+                 Similarity Search
+                         │
+                         ▼
+                       Top-K
+                         │
+                         ▼
+                 Ranked Movies
 ```
 
 ---
 
-## 🚀 Quick Start & Usage
+# 🔢 What Is an Embedding?
 
-### 1. Install Dependencies
-```bash
-pip install -r requirements.txt
+An embedding is a numerical representation of text.
+
+CineVector uses:
+
+```text
+sentence-transformers/all-MiniLM-L6-v2
 ```
 
-### 2. Ingest Dataset into Vector DB
-Ingest all 50 movies from `data/movies.json` into ChromaDB:
+This model converts text into a vector containing **384 floating-point values**.
+
+For example:
+
+```text
+"astronaut exploring space"
+```
+
+becomes something similar to:
+
+```text
+[
+    0.123,
+   -0.421,
+    0.732,
+    ...
+    0.081
+]
+```
+
+There are 384 values in the complete vector.
+
+The important concept is that the vector represents characteristics of the text's meaning.
+
+For example:
+
+```text
+"astronaut exploring space"
+
+and
+
+"crew traveling through the universe"
+
+```
+
+may have different words but can produce relatively similar vector representations.
+
+---
+
+# 🎥 Searchable Movie Text
+
+Before generating an embedding, CineVector combines important movie information into a single searchable text representation.
+
+For example:
+
+```text
+Title: Interstellar.
+Description: A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.
+Genres: Science Fiction, Adventure, Drama.
+Director: Christopher Nolan.
+```
+
+This text is generated by:
+
+```text
+embedding/embedder.py
+```
+
+using:
+
+```python
+MovieEmbedder.format_movie_searchable_text()
+```
+
+The searchable information includes:
+
+- Title
+- Description
+- Genre
+- Director
+
+---
+
+# 🗄️ ChromaDB
+
+CineVector uses **ChromaDB** as its local vector database.
+
+For each movie, ChromaDB stores:
+
+```text
+Movie ID
+     +
+Embedding
+     +
+Searchable Document
+     +
+Metadata
+```
+
+The metadata includes:
+
+```text
+title
+description
+genre
+year
+rating
+director
+```
+
+The vector collection is configured to use **cosine distance**.
+
+The local ChromaDB persistence directory is excluded from Git using `.gitignore`.
+
+The database can therefore be recreated from the movie dataset instead of storing the generated vector database inside the repository.
+
+---
+
+# 📐 Cosine Similarity
+
+CineVector uses cosine distance to determine how close two vectors are.
+
+The application converts the ChromaDB cosine distance into a similarity score using:
+
+```text
+Similarity = 1 - Cosine Distance
+```
+
+For example:
+
+```text
+Cosine Distance = 0.14
+
+Similarity = 1 - 0.14
+           = 0.86
+```
+
+The application then displays:
+
+```text
+86% Match
+```
+
+The displayed match percentage is a normalized similarity score.
+
+It should **not** be interpreted as a probability that the movie is relevant.
+
+---
+
+# 🔎 Semantic Search Process
+
+Suppose the user enters:
+
+```text
+movies about astronauts exploring space
+```
+
+The system performs:
+
+```text
+User Query
+    │
+    ▼
+all-MiniLM-L6-v2
+    │
+    ▼
+384D Query Vector
+    │
+    ▼
+ChromaDB
+    │
+    ▼
+Compare Query Vector
+with Stored Movie Vectors
+    │
+    ▼
+Rank by Similarity
+    │
+    ▼
+Top-K Results
+```
+
+The same embedding model is used for:
+
+```text
+Movie → Vector
+```
+
+and:
+
+```text
+Query → Vector
+```
+
+This is important because both are represented in the same vector space.
+
+---
+
+# 🔍 Vector Search vs Keyword Search
+
+| Feature | Keyword Search | Vector Semantic Search |
+|---|---|---|
+| Matching | Literal words | Semantic similarity |
+| Synonyms | Limited unless explicitly handled | Captured by embeddings |
+| Different wording | Can miss relevant results | Can retrieve semantically related results |
+| Context | Limited | Uses learned text representations |
+| Metadata filtering | Possible | Can be combined with similarity search |
+| Search style | Lexical | Semantic |
+
+### Example
+
+Query:
+
+```text
+A person stranded on another planet trying to survive
+```
+
+A keyword search may depend on words such as:
+
+```text
+stranded
+planet
+survive
+```
+
+Vector search instead converts the entire query into an embedding and searches for movies with similar semantic representations.
+
+---
+
+# 🎯 Metadata Filtering
+
+CineVector supports metadata filtering along with vector similarity search.
+
+Current filters include:
+
+```text
+Genre
+Minimum Rating
+Minimum Year
+```
+
+For example:
+
+```text
+Query:
+"dramatic science fiction movie"
+
+Minimum Rating:
+8.5
+
+Minimum Year:
+2010
+```
+
+The system can use semantic similarity while applying the specified metadata constraints.
+
+---
+
+# 🔄 Incremental Movie Ingestion
+
+CineVector supports incremental ingestion.
+
+Normal ingestion is performed using:
+
 ```bash
 python main.py --ingest
 ```
 
-### 3. Launch the Web Interface
-Start the FastAPI server and open the web app:
-```bash
-python main.py --serve
-```
-Open **`http://127.0.0.1:8000`** in your browser to experience the real-time semantic search UI.
+The ingestion pipeline checks existing movie IDs in ChromaDB.
 
-### 4. Interactive CLI Search
-Run a command-line search directly in your terminal:
+New movies are embedded and added to the database, while existing unchanged movies can be skipped.
+
+The basic flow is:
+
+```text
+                    movies.json
+                         │
+                         ▼
+                  Read Movie ID
+                         │
+                         ▼
+                Already in ChromaDB?
+                    /          \
+                  YES           NO
+                   │             │
+                   ▼             ▼
+                 Skip          Embed
+                                 │
+                                 ▼
+                              Upsert
+                                 │
+                                 ▼
+                              ChromaDB
+```
+
+This avoids unnecessarily generating embeddings for movies that are already present.
+
+---
+
+# ♻️ Full Database Reset
+
+A complete rebuild can be performed using:
+
+```bash
+python main.py --reset
+```
+
+This performs:
+
+```text
+Delete existing ChromaDB collection
+              ↓
+Read movies.json
+              ↓
+Generate embeddings
+              ↓
+Insert all movie records
+```
+
+Use `--reset` when you intentionally want to rebuild the entire vector database.
+
+---
+
+# ⚠️ Incremental Ingestion Behavior
+
+The current incremental ingestion logic primarily uses the movie ID to determine whether a movie already exists.
+
+Therefore:
+
+```text
+New ID
+   ↓
+New embedding
+   ↓
+Insert
+```
+
+An existing ID is currently treated as an existing movie.
+
+If the movie's description, genre, director, or other searchable information changes while its ID remains the same, a future improvement would be to detect that content change and regenerate the embedding.
+
+This can be implemented later using content hashing or document comparison.
+
+---
+
+# 📁 Project Structure
+
+```text
+Movie-Search-Using-Vector/
+│
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+│
+├── config/
+│   └── settings.py
+│
+├── data/
+│   └── movies.json
+│
+├── database/
+│   └── vector_store.py
+│
+├── embedding/
+│   └── embedder.py
+│
+├── ingestion/
+│   └── ingest_movies.py
+│
+├── search/
+│   └── search_movies.py
+│
+├── api/
+│   └── main.py
+│
+├── static/
+│   ├── index.html
+│   ├── style.css
+│   └── app.js
+│
+├── tests/
+│   └── test_vector_search.py
+│
+├── main.py
+├── requirements.txt
+├── .gitignore
+└── README.md
+```
+
+---
+
+# 📂 Directory Responsibilities
+
+## `config/`
+
+Contains application configuration.
+
+```text
+config/settings.py
+```
+
+Stores configuration such as:
+
+- Embedding model name
+- ChromaDB persistence path
+- Collection name
+- Search configuration
+- Similarity threshold
+
+---
+
+## `data/`
+
+Contains the movie dataset:
+
+```text
+data/movies.json
+```
+
+The dataset can be expanded without modifying the core embedding or search logic.
+
+---
+
+## `database/`
+
+Contains the vector database layer:
+
+```text
+database/vector_store.py
+```
+
+Responsible for:
+
+- Creating the ChromaDB client
+- Creating/accessing the collection
+- Storing embeddings
+- Storing metadata
+- Similarity queries
+- Metadata filtering
+- Resetting the collection
+
+---
+
+## `embedding/`
+
+Contains the embedding logic:
+
+```text
+embedding/embedder.py
+```
+
+Responsible for:
+
+- Loading `all-MiniLM-L6-v2`
+- Generating embeddings
+- Batch embedding generation
+- Formatting movie data into searchable text
+
+---
+
+## `ingestion/`
+
+Contains the ingestion pipeline:
+
+```text
+ingestion/ingest_movies.py
+```
+
+Responsible for:
+
+```text
+Movie JSON
+    ↓
+Searchable text
+    ↓
+Embedding generation
+    ↓
+ChromaDB
+```
+
+---
+
+## `search/`
+
+Contains the search engine:
+
+```text
+search/search_movies.py
+```
+
+Responsible for:
+
+- Converting user queries into embeddings
+- Performing vector searches
+- Applying filters
+- Returning ranked results
+- Vector vs keyword comparison
+
+---
+
+## `api/`
+
+Contains the FastAPI application:
+
+```text
+api/main.py
+```
+
+Responsible for exposing the application's functionality through HTTP endpoints.
+
+---
+
+## `static/`
+
+Contains the frontend:
+
+```text
+index.html
+style.css
+app.js
+```
+
+The frontend provides the browser-based interface for searching movies.
+
+---
+
+## `tests/`
+
+Contains automated tests:
+
+```text
+tests/test_vector_search.py
+```
+
+The test suite verifies the core functionality of the project.
+
+---
+
+# 🚀 Installation
+
+## 1. Clone the repository
+
+```bash
+git clone <your-repository-url>
+cd Movie-Search-Using-Vector
+```
+
+Replace `<your-repository-url>` with your GitHub repository URL.
+
+---
+
+## 2. Create a Virtual Environment
+
+### Windows
+
+```powershell
+python -m venv .venv
+```
+
+Activate it:
+
+```powershell
+.venv\Scripts\activate
+```
+
+### Linux / macOS
+
+```bash
+python3 -m venv .venv
+```
+
+Activate it:
+
+```bash
+source .venv/bin/activate
+```
+
+---
+
+## 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+# 📥 Ingest Movies
+
+For normal incremental ingestion:
+
+```bash
+python main.py --ingest
+```
+
+The application reads:
+
+```text
+data/movies.json
+```
+
+and adds the required movie vectors to ChromaDB.
+
+---
+
+# ♻️ Rebuild the Database
+
+To completely reset and rebuild the vector database:
+
+```bash
+python main.py --reset
+```
+
+---
+
+# 🔎 Interactive CLI Search
+
+Run:
+
 ```bash
 python main.py
 ```
 
-### 5. Run Automated Tests
-```bash
-pytest tests/
+The application displays:
+
+```text
+======================================================================
+ 🎬 CineVector — Semantic Movie Search (Vector Database CLI)
+======================================================================
+
+----------------------------------------------------------------------
+Enter search query (or 'q' to quit):
+```
+
+Enter a natural-language query such as:
+
+```text
+movies about astronauts exploring space
+```
+
+The application returns the top matching movies.
+
+Each result includes information such as:
+
+```text
+Title
+Year
+Rating
+Similarity Match
+Cosine Distance
+Genres
+Director
+Description
 ```
 
 ---
 
-## 🎯 Sample Natural Language Prompts
+# 🎯 Single Search Query
 
-Try entering these prompts into the search bar or CLI:
+A single query can be executed directly from the terminal:
 
-- **🚀 Space Exploration**: *"A team of astronauts traveling through deep space searching for a new home"* $\rightarrow$ **Interstellar**, **Apollo 13**, **The Martian**
-- **🤖 Artificial Intelligence**: *"Synthetic humanoid AI questioning human emotions and reality"* $\rightarrow$ **Ex Machina**, **The Matrix**, **Her**
-- **🏝️ Survival**: *"A person stranded alone trying to stay alive against nature"* $\rightarrow$ **Cast Away**, **The Martian**, **Gravity**
-- **🕵️ Dark Mystery**: *"Detectives hunting a serial killer in a dark rainy city using clues"* $\rightarrow$ **Se7en**, **Knives Out**, **Blade Runner 2049**
-- **🎭 Multiverse Adventure**: *"Exploring alternate universes and parallel realities"* $\rightarrow$ **Everything Everywhere All at Once**, **Spider-Man: Across the Spider-Verse**
+```bash
+python main.py --query "movies about astronauts exploring space"
+```
+
+Example output:
+
+```text
+Query: 'movies about astronauts exploring space'
+
+Results:
+- Interstellar (86.5% match)
+- The Martian (82.4% match)
+- Gravity (78.1% match)
+```
+
+The exact results and scores depend on the dataset and generated embeddings.
 
 ---
 
-## 🛠️ Technology Stack
-- **Language**: Python 3.14+
-- **Vector Database**: ChromaDB
-- **Embedding Model**: `sentence-transformers/all-MiniLM-L6-v2` (384-dimensional dense vectors)
-- **Backend API**: FastAPI + Uvicorn
-- **Frontend UI**: Vanilla HTML5, CSS3 (Glassmorphism, Dark Mode), JavaScript (ES6+)
-- **Testing**: Pytest
+# 🌐 Launch the Web Interface
+
+Start the FastAPI server:
+
+```bash
+python main.py --serve
+```
+
+The server runs at:
+
+```text
+http://127.0.0.1:8000
+```
+
+Open this address in a browser to use the CineVector web interface.
+
+---
+
+# 🧪 Automated Testing
+
+CineVector uses **pytest** for automated testing.
+
+Run all tests:
+
+```bash
+python -m pytest -v
+```
+
+The current test suite contains six core tests.
+
+---
+
+## Test 1 — Embedding Generation
+
+```text
+test_embedding_generation
+```
+
+Verifies that:
+
+- The Sentence Transformer model loads
+- Text can be converted into an embedding
+- The embedding is a list
+- The embedding contains 384 values
+- The values are floating-point numbers
+
+Pipeline:
+
+```text
+Text
+ ↓
+all-MiniLM-L6-v2
+ ↓
+384-dimensional vector
+```
+
+---
+
+## Test 2 — Movie Ingestion
+
+```text
+test_ingestion_and_vector_count
+```
+
+Verifies that the movie dataset is successfully ingested into ChromaDB.
+
+The test compares the number of movies in the dataset with the number of vectors stored in the vector database.
+
+This avoids hardcoding a fixed number of movies.
+
+For example:
+
+```text
+movies.json
+    ↓
+70 movies
+    ↓
+ChromaDB
+    ↓
+70 vectors
+```
+
+---
+
+## Test 3 — Semantic Search
+
+```text
+test_space_semantic_search
+```
+
+Tests a natural-language search such as:
+
+```text
+movies about astronauts exploring space
+```
+
+The test checks whether relevant space-related movies appear in the top results.
+
+---
+
+## Test 4 — Metadata Rating Filter
+
+```text
+test_metadata_rating_filter
+```
+
+Tests whether the minimum-rating filter works correctly.
+
+For example:
+
+```text
+Minimum rating = 8.5
+```
+
+Every returned movie must satisfy:
+
+```text
+rating >= 8.5
+```
+
+---
+
+## Test 5 — Top-K Limit
+
+```text
+test_top_k_limit
+```
+
+Tests whether the search engine respects the requested number of results.
+
+Example:
+
+```python
+top_k = 3
+```
+
+Expected:
+
+```text
+3 results
+```
+
+---
+
+## Test 6 — Vector vs Keyword Search
+
+```text
+test_vector_vs_keyword_comparison
+```
+
+Tests the comparison functionality and verifies that it returns:
+
+```text
+vector_search_results
+```
+
+and:
+
+```text
+keyword_search_results
+```
+
+---
+
+# 🔄 Continuous Integration
+
+CineVector uses **GitHub Actions** for Continuous Integration.
+
+The workflow is located at:
+
+```text
+.github/workflows/ci.yml
+```
+
+The CI pipeline runs the automated pytest suite whenever changes are pushed to the configured branches or when a pull request targets those branches.
+
+The workflow performs:
+
+```text
+Git Push / Pull Request
+          │
+          ▼
+   Checkout Repository
+          │
+          ▼
+      Setup Python
+          │
+          ▼
+   Install Dependencies
+          │
+          ▼
+       Run Pytest
+          │
+          ▼
+      PASS / FAIL
+```
+
+The current CI workflow focuses on **testing only**.
+
+It does not currently deploy the application.
+
+---
+
+# 🧪 CI Test Environment
+
+The CI environment runs independently from your local development environment.
+
+The tests create and use their own ChromaDB data during the test run.
+
+The local ChromaDB database is not committed to GitHub.
+
+Therefore:
+
+```text
+Developer Computer
+      │
+      └── Local ChromaDB
+
+GitHub Actions
+      │
+      └── Temporary Test ChromaDB
+```
+
+The CI pipeline does not depend on the developer's local vector database.
+
+---
+
+# 🧰 Technology Stack
+
+| Component | Technology |
+|---|---|
+| Programming Language | Python |
+| Embedding Framework | Sentence Transformers |
+| Embedding Model | `all-MiniLM-L6-v2` |
+| Vector Dimensions | 384 |
+| Vector Database | ChromaDB |
+| Similarity Metric | Cosine Distance |
+| Backend API | FastAPI |
+| ASGI Server | Uvicorn |
+| Frontend | HTML5 / CSS3 / JavaScript |
+| Testing Framework | Pytest |
+| CI | GitHub Actions |
+
+---
+
+# 🏗️ Application Architecture
+
+```text
+                         CineVector
+                             │
+             ┌───────────────┼────────────────┐
+             │               │                │
+             ▼               ▼                ▼
+        Movie Dataset     FastAPI            CLI
+        movies.json         API             Search
+             │               │                │
+             └───────────────┼────────────────┘
+                             │
+                             ▼
+                       Search Engine
+                             │
+                             ▼
+                       MovieEmbedder
+                             │
+                             ▼
+                    all-MiniLM-L6-v2
+                             │
+                             ▼
+                     384D Embedding
+                             │
+                             ▼
+                         ChromaDB
+                             │
+                             ▼
+                    Similarity Search
+                             │
+                             ▼
+                      Ranked Results
+```
+
+---
+
+# 🔄 Data Flow
+
+## Movie Ingestion
+
+```text
+movies.json
+    │
+    ▼
+Load movie records
+    │
+    ▼
+Extract movie information
+    │
+    ▼
+Create searchable text
+    │
+    ▼
+all-MiniLM-L6-v2
+    │
+    ▼
+384D embedding
+    │
+    ▼
+ChromaDB
+    │
+    ├── Vector
+    ├── Document
+    └── Metadata
+```
+
+---
+
+## Search
+
+```text
+User Query
+    │
+    ▼
+MovieSearchEngine
+    │
+    ▼
+MovieEmbedder
+    │
+    ▼
+384D Query Vector
+    │
+    ▼
+ChromaDB
+    │
+    ▼
+Cosine Similarity Search
+    │
+    ▼
+Metadata Filters
+    │
+    ▼
+Top-K Results
+    │
+    ▼
+CLI / API / Web UI
+```
+
+---
+
+# 🔐 Git and Local Data
+
+The local vector database should not be committed to Git.
+
+The `.gitignore` excludes:
+
+```text
+chroma_db/
+```
+
+along with:
+
+```text
+__pycache__/
+.venv/
+.pytest_cache/
+.env
+.vscode/
+.idea/
+*.log
+```
+
+This keeps generated data, local environments, caches, and secrets out of the repository.
+
+The vector database can be recreated using the movie dataset and embedding model.
+
+---
+
+# 📌 Current Project Scope
+
+The current version demonstrates:
+
+- Semantic search
+- Text embeddings
+- Dense vector representations
+- 384-dimensional vectors
+- Local vector database storage
+- ChromaDB similarity search
+- Cosine distance
+- Metadata filtering
+- Incremental ingestion
+- Full database reset
+- Keyword vs vector search comparison
+- FastAPI integration
+- Browser-based search UI
+- Automated testing
+- GitHub Actions Continuous Integration
+
+The application currently runs locally and uses a locally persisted ChromaDB instance.
+
+---
+
+# 🎯 Sample Search Queries
+
+Try the following natural-language queries.
+
+### 🚀 Space Exploration
+
+```text
+A team of astronauts traveling through deep space searching for a new home
+```
+
+Possible relevant movies include:
+
+```text
+Interstellar
+Apollo 13
+The Martian
+```
+
+---
+
+### 🤖 Artificial Intelligence
+
+```text
+An artificial intelligence system questioning human emotions and reality
+```
+
+Possible relevant movies include:
+
+```text
+Ex Machina
+The Matrix
+Her
+```
+
+---
+
+### 🏝️ Survival
+
+```text
+A person stranded somewhere trying to survive against nature
+```
+
+Possible relevant movies include:
+
+```text
+Cast Away
+The Martian
+Gravity
+```
+
+---
+
+### 🕵️ Dark Mystery
+
+```text
+Detectives hunting a serial killer using clues in a dark city
+```
+
+Possible relevant movies include:
+
+```text
+Se7en
+Knives Out
+Blade Runner 2049
+```
+
+---
+
+### 🌌 Multiverse
+
+```text
+People exploring alternate universes and parallel realities
+```
+
+Possible relevant movies include:
+
+```text
+Everything Everywhere All at Once
+Spider-Man: Across the Spider-Verse
+```
+
+The exact results depend on the movie dataset and vector similarity scores.
+
+---
+
+# 🔮 Future Improvements
+
+Potential improvements for future versions include:
+
+## Data
+
+- Larger movie datasets
+- Automatic movie-data ingestion
+- External movie data sources
+- Better movie metadata
+- Automatic dataset updates
+
+## Ingestion
+
+- Detect modified movies
+- Automatically regenerate changed embeddings
+- Detect deleted movies
+- Dataset-to-vector-database synchronization
+- Background ingestion jobs
+
+## Search
+
+- Hybrid dense + keyword search
+- Improved metadata filtering
+- Better ranking
+- Search relevance evaluation
+- Personalized recommendations
+
+## Vector Database
+
+- Production vector database
+- Qdrant Cloud integration
+- Vector database backups
+- Collection management
+- Scaling for larger datasets
+
+## Backend
+
+- Authentication
+- Rate limiting
+- API validation
+- Structured logging
+- Error handling
+- API documentation
+- Production configuration
+
+## DevOps
+
+- Docker containerization
+- Automated deployment
+- Production CI/CD
+- Health checks
+- Monitoring
+- Logging
+- Automated rollback
+
+---
+
+# 🚧 Production Considerations
+
+The current project is primarily a **learning and development implementation**.
+
+For a production deployment, additional considerations would include:
+
+```text
+Local ChromaDB
+      ↓
+Production Vector Database
+
+Local configuration
+      ↓
+Environment-based configuration
+
+Local process
+      ↓
+Containerized application
+
+Basic CI
+      ↓
+CI + Build + Deployment
+
+Local logs
+      ↓
+Centralized logging
+
+No authentication
+      ↓
+Authentication + Authorization
+```
+
+These changes would be required before treating the application as a production-grade service.
+
+---
