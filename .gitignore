@@ -6,12 +6,24 @@ __pycache__/
 # Vector Database persistence
 chroma_db/
 *.chroma
+*.sqlite3
 
-# Environments & IDEs
+# Hugging Face / ML model cache
+.cache/
+.huggingface/
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# Environments
 .venv/
 venv/
 ENV/
 env/
+
+# IDEs
 .vscode/
 .idea/
 
@@ -19,8 +31,13 @@ env/
 .pytest_cache/
 .coverage
 htmlcov/
+.coverage.*
 
 # Logs & OS metadata
 *.log
 .DS_Store
 Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
