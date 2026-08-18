@@ -1358,3 +1358,6 @@ Authentication + Authorization
 These changes would be required before treating the application as a production-grade service.
 
 ---
+
+# Author
+## Kunal Masurkar
