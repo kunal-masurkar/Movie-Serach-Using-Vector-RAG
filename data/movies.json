@@ -313,5 +313,140 @@
     "year": 1998,
     "rating": 8.2,
     "director": "Peter Weir"
+  },
+  {
+    "id": "movie_036",
+    "title": "Fight Club",
+    "description": "An insomniac office worker and a devil-may-care soap maker form an underground fight club that evolves into much more than that.",
+    "genre": ["Drama"],
+    "year": 1999,
+    "rating": 8.8,
+    "director": "David Fincher"
+  },
+  {
+    "id": "movie_037",
+    "title": "Forrest Gump",
+    "description": "The history of the United States from the 1950s to the '70s unfolds through the perspective of an Alabama man with an IQ of 75.",
+    "genre": ["Drama", "Romance"],
+    "year": 1994,
+    "rating": 8.8,
+    "director": "Robert Zemeckis"
+  },
+  {
+    "id": "movie_038",
+    "title": "The Prestige",
+    "description": "After a tragic accident, two stage magicians in 1890s London engage in a rivalry to create the ultimate illusion while sacrificing everything they have.",
+    "genre": ["Drama", "Mystery", "Science Fiction"],
+    "year": 2006,
+    "rating": 8.5,
+    "director": "Christopher Nolan"
+  },
+  {
+    "id": "movie_039",
+    "title": "Good Will Hunting",
+    "description": "Will Hunting, a janitor at M.I.T., has a gift for mathematics, but needs help from a psychologist to find direction in his life.",
+    "genre": ["Drama"],
+    "year": 1997,
+    "rating": 8.3,
+    "director": "Gus Van Sant"
+  },
+  {
+    "id": "movie_040",
+    "title": "Spider-Man: Across the Spider-Verse",
+    "description": "Miles Morales catapults across the Multiverse, where he encounters a team of Spider-People charged with protecting its very existence.",
+    "genre": ["Animation", "Action", "Science Fiction"],
+    "year": 2023,
+    "rating": 8.7,
+    "director": "Joaquim Dos Santos, Kemp Powers, Justin K. Thompson"
+  },
+  {
+    "id": "movie_041",
+    "title": "Mad Max: Fury Road",
+    "description": "In a post-apocalyptic wasteland, a woman rebels against a tyrannical ruler in search for her homeland with the aid of a group of female prisoners and a drifter.",
+    "genre": ["Action", "Adventure", "Science Fiction"],
+    "year": 2015,
+    "rating": 8.1,
+    "director": "George Miller"
+  },
+  {
+    "id": "movie_042",
+    "title": "Memento",
+    "description": "A man with short-term memory loss attempts to track down his wife's murderer using tattoos and polaroid photos.",
+    "genre": ["Mystery", "Thriller"],
+    "year": 2000,
+    "rating": 8.4,
+    "director": "Christopher Nolan"
+  },
+  {
+    "id": "movie_043",
+    "title": "The Silence of the Lambs",
+    "description": "A young FBI cadet must receive the help of an incarcerated and manipulative cannibal killer to catch another serial killer who skins his victims.",
+    "genre": ["Crime", "Drama", "Thriller"],
+    "year": 1991,
+    "rating": 8.6,
+    "director": "Jonathan Demme"
+  },
+  {
+    "id": "movie_044",
+    "title": "Schindler's List",
+    "description": "In German-occupied Poland during World War II, industrialist Oskar Schindler gradually becomes concerned for his Jewish workforce after witnessing their persecution by the Nazis.",
+    "genre": ["Biography", "Drama", "History"],
+    "year": 1993,
+    "rating": 9.0,
+    "director": "Steven Spielberg"
+  },
+  {
+    "id": "movie_045",
+    "title": "Jurassic Park",
+    "description": "A pragmatic paleontologist touring an almost complete island theme park is tasked with protecting two kids after a power failure allows cloned dinosaurs to break loose.",
+    "genre": ["Adventure", "Science Fiction", "Thriller"],
+    "year": 1993,
+    "rating": 8.2,
+    "director": "Steven Spielberg"
+  },
+  {
+    "id": "movie_046",
+    "title": "The Godfather",
+    "description": "The aging patriarch of an organized crime dynasty in postwar New York City transfers control of his clandestine empire to his reluctant youngest son.",
+    "genre": ["Crime", "Drama"],
+    "year": 1972,
+    "rating": 9.2,
+    "director": "Francis Ford Coppola"
+  },
+  {
+    "id": "movie_047",
+    "title": "Toy Story",
+    "description": "A cowboy doll is profoundly threatened and jealous when a new futuristic spaceman action figure supplants him as top toy in a young boy's room.",
+    "genre": ["Animation", "Adventure", "Comedy"],
+    "year": 1995,
+    "rating": 8.3,
+    "director": "John Lasseter"
+  },
+  {
+    "id": "movie_048",
+    "title": "The Lord of the Rings: The Fellowship of the Ring",
+    "description": "A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron.",
+    "genre": ["Action", "Adventure", "Fantasy"],
+    "year": 2001,
+    "rating": 8.9,
+    "director": "Peter Jackson"
+  },
+  {
+    "id": "movie_049",
+    "title": "Minority Report",
+    "description": "In a future where a specialized police unit arrests murderers before they commit their crimes, an officer from that unit is framed for a future murder.",
+    "genre": ["Science Fiction", "Action", "Mystery"],
+    "year": 2002,
+    "rating": 7.6,
+    "director": "Steven Spielberg"
+  },
+  {
+    "id": "movie_050",
+    "title": "The Social Network",
+    "description": "As Harvard student Mark Zuckerberg creates the social networking site that would become Facebook, he is sued by the twins who claimed he stole their idea.",
+    "genre": ["Biography", "Drama"],
+    "year": 2010,
+    "rating": 7.8,
+    "director": "David Fincher"
   }
 ]
